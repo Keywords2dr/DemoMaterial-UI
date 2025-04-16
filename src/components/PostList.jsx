@@ -4,14 +4,17 @@ import {
   Box,
   Typography,
   Dialog,
-  DialogTitle,
   DialogContent,
-  DialogContentText,
-  TextField,
   DialogActions,
+  TextField,
+  IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
 import Post from "./Post";
+import ImageIcon from "@mui/icons-material/Image";
+import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
+import SendIcon from "@mui/icons-material/Send";
+import CloseIcon from "@mui/icons-material/Close";
 
 const postItem = [
   {
@@ -45,12 +48,26 @@ const postItem = [
 
 export const PostList = () => {
   const [open, setOpen] = useState(false);
+  const [content, setContent] = useState("");
+  const maxLength = 280;
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setContent("");
+  };
+
+  const handleContentChange = (event) => {
+    setContent(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    // Handle post submission logic here
+    console.log("Post submitted:", content);
+    handleClose();
   };
 
   return (
@@ -67,7 +84,7 @@ export const PostList = () => {
       <Box
         sx={{
           width: "100%",
-          bgcolor: "#16181C",
+          bgcolor: "#16181c",
           borderRadius: "50px",
           padding: "16px",
         }}
@@ -96,7 +113,7 @@ export const PostList = () => {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: "#6EC207",
+              backgroundColor: "#6ec207",
               color: "#f5f5f5",
               borderRadius: "25px",
             }}
@@ -106,44 +123,138 @@ export const PostList = () => {
         </Box>
       </Box>
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
         <Box
-          sx={{ backgroundColor: "#16181c", width: "400px" }}
-          component="form"
+          sx={{
+            background: "#16181c",
+            borderRadius: "20px",
+            padding: "24px",
+            position: "relative",
+          }}
         >
-          <DialogTitle color="#f5f5f5">Create new</DialogTitle>
-          <DialogContent>
+          <IconButton
+            onClick={handleClose}
+            sx={{
+              position: "absolute",
+              top: 8,
+              right: 8,
+              color: "#808080",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+            <Avatar
+              src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="User Avatar"
+              sx={{ width: 60, height: 60, border: "2px solid #808080" }}
+            />
+          </Box>
+          <DialogContent sx={{ padding: 0 }}>
             <TextField
-              label="What's new?"
-              name="content"
+              placeholder="Chia sẻ suy nghĩ của bạn..."
+              value={content}
+              onChange={handleContentChange}
               fullWidth
               multiline
-              rows={3}
+              rows={5}
+              inputProps={{ maxLength }}
               sx={{
-                marginTop: "16px",
                 "& .MuiInputBase-root": {
-                  color: "#f5f5f5", // Text color
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#808080", // Label color
+                  color: "#f5f5f5",
+                  backgroundColor: "#1e2126",
+                  borderRadius: "16px",
+                  padding: "16px",
+                  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
+                  fontSize: "1rem",
                 },
                 "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#808080", // Border color
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#f5f5f5", // Hover border color
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#f5f5f5", // Focused border color
-                  },
+                  "& fieldset": { border: "none" },
+                  "&:hover fieldset": { border: "none" },
+                  "&.Mui-focused fieldset": { border: "none" },
                 },
               }}
             />
+            <Box
+              sx={{
+                mt: 1,
+                height: "4px",
+                background: "#2a2e36",
+                borderRadius: "2px",
+                overflow: "hidden",
+              }}
+            >
+              <Box
+                sx={{
+                  width: `${(content.length / maxLength) * 100}%`,
+                  height: "100%",
+                  backgroundColor: "#6ec207",
+                  transition: "width 0.3s ease",
+                }}
+              />
+            </Box>
+            <Typography
+              variant="caption"
+              sx={{
+                color: content.length > maxLength * 0.9 ? "#ff4d4d" : "#808080",
+                display: "block",
+                textAlign: "right",
+                mt: 0.5,
+              }}
+            >
+              {content.length}/{maxLength}
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
+              <IconButton
+                sx={{ color: "#808080", "&:hover": { backgroundColor: "#2a2e36" } }}
+                onClick={() => console.log("Add media clicked")}
+              >
+                <ImageIcon />
+              </IconButton>
+              <IconButton
+                sx={{ color: "#808080", "&:hover": { backgroundColor: "#2a2e36" } }}
+                onClick={() => console.log("Add emoji clicked")}
+              >
+                <EmojiEmotionsIcon />
+              </IconButton>
+            </Box>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Post</Button>
+          <DialogActions sx={{ justifyContent: "center", gap: 2, padding: "16px 0" }}>
+            <Button
+              onClick={handleClose}
+              sx={{
+                backgroundColor: "#2a2e36",
+                color: "#f5f5f5",
+                borderRadius: "25px",
+                padding: "8px 24px",
+                textTransform: "none",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#3a3f47" },
+              }}
+              startIcon={<CloseIcon />}
+            >
+              Hủy
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              disabled={!content.trim()}
+              sx={{
+                backgroundColor: "#6ec207",
+                color: "#f5f5f5",
+                borderRadius: "25px",
+                padding: "8px 24px",
+                textTransform: "none",
+                fontWeight: "bold",
+                "&:hover": { backgroundColor: "#5ba005" },
+                "&.Mui-disabled": {
+                  backgroundColor: "#3a3f47",
+                  color: "#808080",
+                },
+              }}
+              startIcon={<SendIcon />}
+            >
+              Đăng
+            </Button>
           </DialogActions>
         </Box>
       </Dialog>
