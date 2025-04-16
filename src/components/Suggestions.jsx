@@ -12,27 +12,26 @@ import {
 } from "@mui/material";
 import "../styles/Suggestions.css";
 
-// Mock data for suggestions
+// Dữ liệu gợi ý người dùng
 const suggestedUsers = [
   {
     id: 1,
-    name: "John Doe",
-    username: "@johndoe",
+    name: "Nguyễn Văn A",
+    username: "@nguyenvana",
     avatar: "https://mui.com/static/images/avatar/1.jpg",
   },
   {
     id: 2,
-    name: "Jane Smith",
-    username: "@janesmith",
+    name: "Trần Thị B",
+    username: "@tranthib",
     avatar: "https://mui.com/static/images/avatar/2.jpg",
   },
   {
     id: 3,
-    name: "Mike Johnson",
-    username: "@mikejohnson",
+    name: "Lê Văn C",
+    username: "@levanc",
     avatar: "https://mui.com/static/images/avatar/3.jpg",
   },
-  // Add more users as needed
 ];
 
 const Suggestions = () => {
